@@ -8,18 +8,64 @@
 $(document).on('ready', function(){
     // Place your code here, inside the document ready handler.
 
-    // Create a function called `searchImages()`. This function will handle the
-    // process of taking a user's search terms and sending them to Flickr for a
-    // response.
 
-    // Inside the `searchImages()` function, the following things should happen:
+  var searchImages = function(tags) {
+      var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?&format=json";
+      console.log(tags);
+      $.getJSON( flickerAPI, {
+        tags    : tags,
+        tagmode : "any",
+        format  : "json"
+      }) // getjson
+      .done(function(data){
+        $('#images').empty();
+        $('.search-title').text( "Showing results for " + tags);
+        console.log(data.items);
+        for (i=0; i<10; i++){ // specifically showing 10 images
+          var item = data.items[i];
 
-        // 1.   Accept a string value called `tags` as an argument. Example:
-        //      `var searchPhotos = function(tags){`
-        //
-        // 2.   Define the location of the Flickr API like this:
-        //      `var flickrAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";`
-        //
+          var flickrPhoto = document.createElement ('li');
+
+          // var image = document.createElement ('img');
+          // $(image).attr("src", item.media.m);
+          // flickrPhoto.appendChild(image);
+          
+          var description = document.createElement ('p');
+          description.innerHTML = item.description;
+          flickrPhoto.appendChild(description);
+
+          var title = document.createElement ('p');
+          title.innerHTML = item.title;
+          flickrPhoto.appendChild(title);
+
+          var dateTaken = document.createElement ('p');
+          dateTaken.innerHTML = item.date_taken;
+          flickrPhoto.appendChild(dateTaken);
+
+
+          var author = document.createElement ('p');
+          author.innerHTML = item.author;
+          flickrPhoto.appendChild(author);
+
+          var link = document.createElement ('a');
+          link.href = item.link;
+          link.innerHTML = item.link;
+          flickrPhoto.appendChild(link);
+
+          document.getElementById('images').appendChild(flickrPhoto);
+        } // for
+      }); // done
+
+
+  }; // searchImages
+
+  $('button.search').on('click', function(event) {
+    event.preventDefault();
+    var tags = $("input[name='searchText']").val();
+    searchImages(tags);
+
+  }); // button
+
         // 3.   Construct a `$.getJSON()` call where you send a request object
         //      including the tags the user submitted, and a `done()` handler
         //      that displays and refreshes the content appropriately.
@@ -27,8 +73,6 @@ $(document).on('ready', function(){
         // 4.   Update the display to add the images to the list with the id
         //      `#images`.
 
-    // Attach an event to the search button (`button.search`) to execute the
-    // search when clicked.
 
         // When the Search button is clicked, the following should happen:
         //
