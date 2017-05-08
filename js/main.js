@@ -29,14 +29,14 @@ $(document).on('ready', function(){
           // var image = document.createElement ('img');
           // $(image).attr("src", item.media.m);
           // flickrPhoto.appendChild(image);
-          
+          var title = document.createElement ('p');
+          title.innerHTML = item.title;
+          flickrPhoto.appendChild(title);
+
           var description = document.createElement ('p');
           description.innerHTML = item.description;
           flickrPhoto.appendChild(description);
 
-          var title = document.createElement ('p');
-          title.innerHTML = item.title;
-          flickrPhoto.appendChild(title);
 
           var dateTaken = document.createElement ('p');
           dateTaken.innerHTML = item.date_taken;
